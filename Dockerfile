@@ -6,7 +6,9 @@ RUN echo '@edge http://nl.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repos
   mkdir /etc/supervisor.d &&\
   sed -i 's/post_max_size = 8M/post_max_size = 16M/g' /etc/php7/php.ini &&\
   sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 16M/g' /etc/php7/php.ini &&\
-  sed -i "s#listen = 127.0.0.1:9000#listen = /var/run/php/php-fpm7.sock#g" /etc/php7/php-fpm.d/www.conf
+  sed -i "s#listen = 127.0.0.1:9000#listen = /var/run/php/php-fpm7.sock#g" /etc/php7/php-fpm.d/www.conf &&\
+  sed -i "s#^user = nobody#user = www-data#g" /etc/php7/php-fpm.d/www.conf &&\
+  sed -i "s#^group = nobody#group = www-data#g" /etc/php7/php-fpm.d/www.conf &&\
 
 ENV FASTCGI_PASS="unix:/var/run/php/php-fpm7.sock"
 COPY default /etc/nginx/sites-available/default
